@@ -4,6 +4,7 @@ import sys
 import tkinter as tk
 import pickle
 import password_str as pw
+import os
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -108,6 +109,10 @@ class Application(tk.Frame):
 
     #ファイルから呼び込み
     def button_clickld(self):
+        path = "./testfile.dat"
+        if os.path.isfile(path) == False:
+            self.Label1["text"] = "ファイルがありません"
+            return
         file_a = open('testfile.dat','rb')
         line1 = pickle.load(file_a)
         for N in line1:
