@@ -71,20 +71,20 @@ class Application(tk.Frame):
         self.TextBox2.delete(0,tk.END)
         self.TextBox3.delete(0,tk.END)
         self.TextBox1.focus_set()
-        self.Label1["text"] = "入力クリアしました"
+        self.Label1["text"] = u"入力クリアしました"
 
     #パスワード作成
     def button_clickpw(self):
         self.TextBox3.delete(0,tk.END)
         Val = pw.pass_make()
         self.TextBox3.insert(tk.END,Val)
-        self.Label1["text"] = "パスワードを作成しました"
+        self.Label1["text"] = u"パスワードを作成しました"
 
     #データ入力
     def button_clickin(self):
         Val = self.TextBox1.get()
         if Val == '':
-            self.Label1["text"] = "入力されていません"
+            self.Label1["text"] = u"入力されていません"
             return
         self.ListBox1.insert(tk.END,Val)
         Val = self.TextBox2.get()
@@ -92,39 +92,33 @@ class Application(tk.Frame):
         Val = self.TextBox3.get()
         self.pass_list.append(Val)
         self.button_clickcr()
-        self.Label1["text"] = "入力しました"
+        self.Label1["text"] = u"入力しました"
         
     #ファイル保存
     def button_clicksv(self):
-        file_a = open('testfile.dat','wb')
-        pickle.dump(self.ListBox1.get(0,tk.END),file_a)
-        file_a.close()
-        file_b = open('testfile1.dat','wb')
-        pickle.dump(self.id_list,file_b)
-        file_b.close()
-        file_c = open('testfile2.dat','wb')
-        pickle.dump(self.pass_list,file_c)
-        file_c.close()
-        self.Label1["text"] = "保存しました"
+        with open('testfile.dat','wb') as file_a:
+            pickle.dump(self.ListBox1.get(0,tk.END),file_a)
+        with open('testfile1.dat','wb') as file_b:
+            pickle.dump(self.id_list,file_b)
+        with open('testfile2.dat','wb') as file_c:
+            pickle.dump(self.pass_list,file_c)
+        self.Label1["text"] = u"保存しました"
 
     #ファイルから呼び込み
     def button_clickld(self):
         path = "./testfile.dat"
         if os.path.isfile(path) == False:
-            self.Label1["text"] = "ファイルがありません"
+            self.Label1["text"] = u"ファイルがありません"
             return
-        file_a = open('testfile.dat','rb')
-        line1 = pickle.load(file_a)
-        for N in line1:
-            self.ListBox1.insert(tk.END,N)
-        file_a.close()    
-        file_b = open('testfile1.dat','rb')
-        self.id_list = pickle.load(file_b)
-        file_b.close()
-        file_c = open('testfile2.dat','rb')
-        self.pass_list = pickle.load(file_c)
-        file_c.close()
-        self.Label1["text"] = "呼び込みました"
+        with open('testfile.dat','rb') as file_a:
+            line1 = pickle.load(file_a)
+            for N in line1:
+                self.ListBox1.insert(tk.END,N)
+        with open('testfile1.dat','rb') as file_b:
+            self.id_list = pickle.load(file_b)
+        with open('testfile2.dat','rb') as file_c:
+            self.pass_list = pickle.load(file_c)
+        self.Label1["text"] = u"呼び込みました"
 
     #項目の削除
     def Delete_press(self,event):
@@ -132,7 +126,7 @@ class Application(tk.Frame):
         self.ListBox1.delete(Val,Val)
         del self.id_list[Val]
         del self.pass_list[Val]
-        self.Label1["text"] ="指定場所を削除しました"
+        self.Label1["text"] = u"指定場所を削除しました"
 
     #項目の挿入
     def Ins_press(self,event):
@@ -144,7 +138,7 @@ class Application(tk.Frame):
         ins_Val = self.TextBox3.get()
         self.pass_list.insert(Val,ins_Val)
         self.button_clickcr()
-        self.Label1["text"] = "挿入しました"
+        self.Label1["text"] = u"挿入しました"
         
     #項目の表示
     def Show_press(self,event):
@@ -156,7 +150,7 @@ class Application(tk.Frame):
         self.TextBox3.insert(tk.END,self.pass_list[Val])
         self.master.clipboard_clear()
         self.master.clipboard_append(self.pass_list[Val])
-        self.Label1["text"] = "表示しました"
+        self.Label1["text"] = u"表示しました"
 
 #本体
 if __name__ == '__main__':
