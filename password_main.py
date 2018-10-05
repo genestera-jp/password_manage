@@ -36,17 +36,17 @@ class Application(tk.Frame):
         self.TextBox1.grid(row=1)
         #入力ボックス２
         self.Label3 = tk.Label(self.in_f,text=u'ID')
-        self.Label3.grid(row=3)
+        self.Label3.grid(row=2)
         self.TextBox2 = tk.Entry(self.in_f,width=32)
-        self.TextBox2.grid(row=4)
+        self.TextBox2.grid(row=3)
         #入力ボックス３
         self.Label4 = tk.Label(self.in_f,text=u'Password')
-        self.Label4.grid(row=5)
+        self.Label4.grid(row=4)
         self.TextBox3 = tk.Entry(self.in_f,width=16)
-        self.TextBox3.grid(row=6)
+        self.TextBox3.grid(row=5)
         #入力ボタン
         self.Button1 = tk.Button(self.in_f,text=u'入力ボタン',width=20,command=self.button_clickin)
-        self.Button1.grid(row=7,pady=20)
+        self.Button1.grid(row=6,pady=20)
         #入力ボックスフレームの表示
         self.in_f.grid(row=0,column=2)
         #クリアボタン
