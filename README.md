@@ -20,5 +20,6 @@ pythonのpassword_main.pyを実行してください。
   
 
 ## 関連情報  
-1. [簡単なデータ処理のひな形](http://blog1.tela.daa.jp/ "孤独なコンピュータ")
+1. [簡単なデータ処理のひな形](http://blog1.tela.daa.jp/?eid=141/ "孤独なコンピュータ")  
+
 
