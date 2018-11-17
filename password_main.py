@@ -11,10 +11,12 @@ class Application(tk.Frame):
         super().__init__(master)
         self.grid()
         self.create_widgets()
-        master.title(u"パスワード一覧")
-        master.geometry("512x512")
+        self.master.title(u"パスワード一覧")
+        self.master.geometry("512x512")
         self.id_list = []
         self.pass_list = []
+        self.save_list = []
+        self.path = os.path.join(os.path.dirname(__file__),'file_data.dat')
 
     def create_widgets(self):
         #リストボックス
@@ -76,80 +78,78 @@ class Application(tk.Frame):
     #パスワード作成
     def button_clickpw(self):
         self.TextBox3.delete(0,tk.END)
-        Val = pw.pass_make()
-        self.TextBox3.insert(tk.END,Val)
+        self.Val = pw.pass_make()
+        self.TextBox3.insert(tk.END,self.Val)
         self.Label1["text"] = u"パスワードを作成しました"
 
     #データ入力
     def button_clickin(self):
-        Val = self.TextBox1.get()
-        if Val == '':
+        self.Val = self.TextBox1.get()
+        if self.Val == '':
             self.Label1["text"] = u"入力されていません"
             return
-        self.ListBox1.insert(tk.END,Val)
-        Val = self.TextBox2.get()
-        self.id_list.append(Val)
-        Val = self.TextBox3.get()
-        self.pass_list.append(Val)
+        self.ListBox1.insert(tk.END,self.Val)
+        self.Val = self.TextBox2.get()
+        self.id_list.append(self.Val)
+        self.Val = self.TextBox3.get()
+        self.pass_list.append(self.Val)
         self.button_clickcr()
         self.Label1["text"] = u"入力しました"
         
     #ファイル保存
     def button_clicksv(self):
-        with open('testfile.dat','wb') as file_a:
-            pickle.dump(self.ListBox1.get(0,tk.END),file_a)
-        with open('testfile1.dat','wb') as file_b:
-            pickle.dump(self.id_list,file_b)
-        with open('testfile2.dat','wb') as file_c:
-            pickle.dump(self.pass_list,file_c)
+        self.save_list.append(list(self.ListBox1.get(0,tk.END)))
+        self.save_list.append(self.id_list)
+        self.save_list.append(self.pass_list)
+        with open(self.path,'wb') as file_a:
+            pickle.dump(self.save_list,file_a)
         self.Label1["text"] = u"保存しました"
+        self.save_list = []
 
     #ファイルから呼び込み
     def button_clickld(self):
-        path = "./testfile.dat"
-        if os.path.isfile(path) == False:
+        if os.path.isfile(self.path) == False:
             self.Label1["text"] = u"ファイルがありません"
             return
-        with open('testfile.dat','rb') as file_a:
-            line1 = pickle.load(file_a)
-            for N in line1:
-                self.ListBox1.insert(tk.END,N)
-        with open('testfile1.dat','rb') as file_b:
-            self.id_list = pickle.load(file_b)
-        with open('testfile2.dat','rb') as file_c:
-            self.pass_list = pickle.load(file_c)
+        with open(self.path,'rb') as file_a:
+            self.save_list = pickle.load(file_a)
+        for N in self.save_list[0]:
+            self.ListBox1.insert(tk.END,N)
+        self.id_list = self.save_list[1]
+        self.pass_list = self.save_list[2]
         self.Label1["text"] = u"呼び込みました"
+        self.save_list = []
 
     #項目の削除
     def Delete_press(self,event):
-        Val = self.ListBox1.index(tk.ACTIVE)
-        self.ListBox1.delete(Val,Val)
-        del self.id_list[Val]
-        del self.pass_list[Val]
+        self.Val = self.ListBox1.index(tk.ACTIVE)
+        self.ListBox1.delete(self.Val,self.Val)
+        del self.id_list[self.Val]
+        del self.pass_list[self.Val]
         self.Label1["text"] = u"指定場所を削除しました"
 
     #項目の挿入
     def Ins_press(self,event):
-        Val = self.ListBox1.index(tk.ACTIVE)
-        ins_Val = self.TextBox1.get()
-        self.ListBox1.insert(Val,ins_Val)
-        ins_Val = self.TextBox2.get()
-        self.id_list.insert(Val,ins_Val)
-        ins_Val = self.TextBox3.get()
-        self.pass_list.insert(Val,ins_Val)
+        self.Val = self.ListBox1.index(tk.ACTIVE)
+        self.ins_Val = self.TextBox1.get()
+        self.ListBox1.insert(self.Val,self.ins_Val)
+        self.ins_Val = self.TextBox2.get()
+        self.id_list.insert(self.Val,self.ins_Val)
+        self.ins_Val = self.TextBox3.get()
+        self.pass_list.insert(self.Val,self.ins_Val)
         self.button_clickcr()
         self.Label1["text"] = u"挿入しました"
         
     #項目の表示
     def Show_press(self,event):
-        Val = self.ListBox1.index(tk.ACTIVE)
-        N = self.ListBox1.get(Val)
+        self.Val = self.ListBox1.index(tk.ACTIVE)
+        self.N = self.ListBox1.get(self.Val)
         self.button_clickcr()
-        self.TextBox1.insert(tk.END,N)
-        self.TextBox2.insert(tk.END,self.id_list[Val])
-        self.TextBox3.insert(tk.END,self.pass_list[Val])
+        self.TextBox1.insert(tk.END,self.N)
+        self.TextBox2.insert(tk.END,self.id_list[self.Val])
+        self.TextBox3.insert(tk.END,self.pass_list[self.Val])
         self.master.clipboard_clear()
-        self.master.clipboard_append(self.pass_list[Val])
+        self.master.clipboard_append(self.pass_list[self.Val])
         self.Label1["text"] = u"表示しました"
 
 #本体
